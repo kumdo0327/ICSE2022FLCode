@@ -1,4 +1,5 @@
 import os
+import time
 from read_data.ManyBugsDataLoader import ManyBugsDataLoader
 from read_data.Defects4JDataLoader import Defects4JDataLoader
 from read_data.SIRDataLoader import SIRDataLoader
@@ -8,7 +9,6 @@ from data_process.data_systhesis.cvae_synthesis import CVAESynthesisData
 from data_process.dimensional_reduciton.PCA import PCAData
 from data_process.data_undersampling.undersampling import UndersamplingData
 from calculate_suspiciousness.CalculateSuspiciousness import CalculateSuspiciousness
-
 
 class Pipeline:
     def __init__(self, project_dir, configs):
@@ -20,9 +20,15 @@ class Pipeline:
         self.experiment = configs["-e"]
         self.method = configs["-m"].split(",")
         self.dataloader = self._choose_dataloader_obj()
+        
+        self.save_tc_path = project_dir + "/generated_tc/"
+        self.start = time.time()
 
     def run(self):
         self._run_task()
+        time_log = int(time.time() - self.start) 
+        with open(self.project_dir + "/time/" + self.program + "-" + self.bug_id + ".txt", "w") as f:
+            f.write(str(time_log // 3600) + ':' + str((time_log % 3600) // 60) + ':' + str(time_log % 60))
 
     def _dynamic_choose(self, loader):
         self.dataset_dir = os.path.join(self.project_dir, "data")
@@ -51,7 +57,7 @@ class Pipeline:
             self.data_obj = SMOTEData(self.dataloader)
             self.data_obj.process()
         elif self.experiment == "cvae":
-            self.data_obj = CVAESynthesisData(self.dataloader)
+            self.data_obj = CVAESynthesisData(self.dataloader, self.save_tc_path)
             self.data_obj.process()
         elif self.experiment == "fs":
             cp = float(self.configs["-cp"])
@@ -63,7 +69,7 @@ class Pipeline:
             ep = float(self.configs["-ep"])
             self.data_obj = PCAData(self.dataloader)
             self.data_obj.process(cp, ep)
-            self.data_obj = CVAESynthesisData(self.data_obj)
+            self.data_obj = CVAESynthesisData(self.data_obj, self.save_tc_path)
             self.data_obj.process()
 
         save_rank_path = os.path.join(self.project_dir, "results")

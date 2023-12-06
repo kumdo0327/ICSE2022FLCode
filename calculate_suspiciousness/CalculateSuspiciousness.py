@@ -17,6 +17,8 @@ class CalculateSuspiciousness():
         self._calculate_susp_for_method_list()
         self._calculate_rank()
         self._save_rank()
+        self._calculate_AR_rank()
+        self._save_AR_rank()
 
     def _calculate_susp_for_method_list(self):
         for method in self.method:
@@ -26,15 +28,23 @@ class CalculateSuspiciousness():
         self.suspicious_list = calc_corr(self.data_obj.data_df, method)
         for col in self.data_obj.rest_columns:
             self.suspicious_list[col] = 0
-        write_corr_to_txt(method, self.suspicious_list, self.data_obj.file_dir, self.state)
+        write_corr_to_txt(method, self.suspicious_list, self.data_obj.file_dir, self.state, self.data_obj.bug_id)
 
     def _calculate_rank(self):
-        all_df_dict = get_corr(self.data_obj.file_dir, self.method, self.state)
+        all_df_dict = get_corr(self.data_obj.file_dir, self.method, self.state, self.data_obj.bug_id)
         self.rank_MFR_dict = self.__calculate_rank(all_df_dict, self.data_obj.fault_line, self.method)
 
+    def _calculate_AR_rank(self):
+        all_df_dict = get_corr(self.data_obj.file_dir, self.method, self.state, self.data_obj.bug_id)
+        self.rank_MAR_dict = self.__calc_MAR_rank(all_df_dict, self.data_obj.fault_line, self.method)
+
     def _save_rank(self):
-        save_rank_filename = os.path.join(self.sava_rank_path, f"{self.state}_MFR.txt")
-        write_rank_to_txt(self.rank_MFR_dict, save_rank_filename, self.data_obj.program, self.data_obj.bug_id)
+        save_rank_filename = os.path.join(self.sava_rank_path, f"{self.state}/{self.data_obj.program}-{self.data_obj.bug_id}-FR.txt")
+        write_rank_to_txt(self.rank_MFR_dict, save_rank_filename)
+
+    def _save_AR_rank(self):
+        save_rank_filename = os.path.join(self.sava_rank_path, f"{self.state}/{self.data_obj.program}-{self.data_obj.bug_id}-AR.txt")
+        write_rank_to_txt(self.rank_MAR_dict, save_rank_filename)
 
     def __calculate_rank(self, all_df_dict, fault_line_data, method_list):
         real_fault_line_data = list()
@@ -43,9 +53,6 @@ class CalculateSuspiciousness():
         for line in fault_line_data:
             if line in real_line_data:
                 real_fault_line_data.append(line)
-            else:
-                real_fault_line_data.extend(find_closest_num(real_line_data, line))
-        real_fault_line_data = list(set(real_fault_line_data))
 
         result_dict = dict()
         for method in method_list:
@@ -65,9 +72,6 @@ class CalculateSuspiciousness():
         for line in fault_line_data:
             if line in real_line_data:
                 real_fault_line_data.append(line)
-            else:
-                real_fault_line_data.extend(find_closest_num(real_line_data, line))
-        real_fault_line_data = list(set(real_fault_line_data))
 
         result_dict = dict()
         for method in method_list:

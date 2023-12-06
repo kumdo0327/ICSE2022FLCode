@@ -46,8 +46,7 @@ class ManyBugsDataLoader(DataLoader):
         self.fault_line = self._process_fault_line_data(fault_line_data)
 
     def _process_fault_line_data(self, fault_line_data):
-        temp_data = re.findall("\"(.*?)\"", fault_line_data)[0]
-        temp_data = temp_data.strip().split()
+        temp_data = re.findall("\"(.*?)\"", fault_line_data)
         return list(map(int, temp_data))
 
     def _process_label_data(self, label_data):

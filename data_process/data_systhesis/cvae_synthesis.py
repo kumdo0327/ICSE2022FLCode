@@ -11,8 +11,8 @@ from data_process.data_systhesis.CVAE_model import *
 
 class CVAESynthesisData(ProcessedData):
 
-    def __init__(self, raw_data):
-        super().__init__(raw_data)
+    def __init__(self, raw_data, save_tc_path):
+        super().__init__(raw_data, save_tc_path)
         self.rest_columns = raw_data.rest_columns
 
     def process(self):
@@ -93,3 +93,6 @@ class CVAESynthesisData(ProcessedData):
         self.feature_df = pd.DataFrame(compose_feature, columns=self.feature_df.columns, dtype=float)
 
         self.data_df = pd.concat([self.feature_df, self.label_df], axis=1)
+
+        print('DataFrame saving ...')
+        self.data_df.to_pickle(self.save_tc_path + self.program + "-" + self.bug_id)
