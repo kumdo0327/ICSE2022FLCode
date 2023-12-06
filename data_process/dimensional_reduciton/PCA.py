@@ -1,4 +1,5 @@
 import math
+import os
 
 import numpy as np
 import pandas as pd
@@ -6,15 +7,27 @@ from data_process.ProcessedData import ProcessedData
 
 class PCAData(ProcessedData):
 
-    def __init__(self, raw_data):
+    def __init__(self, raw_data, cache_path, program):
         super().__init__(raw_data)
         self.rest_columns = None
+
+        self.feature_path = os.path.join(cache_path, program) + "-feature.npy"
 
     def process(self, components_percent=0.7, eigenvalue_percent=0.7):
         if len(self.label_df) > 1:
             covMatrix = self.feature_df.cov()
 
-            featValue, featVec = np.linalg.eig(covMatrix)
+            featValue, featVec = None, None
+            if os.path.exists(self.feature_path):
+                with open(self.feature_path, 'rb') as f:
+                    featValue = np.load(f)
+                    featVec = np.load(f)
+            else:
+                featValue, featVec = np.linalg.eig(covMatrix)
+                with open(self.feature_path, 'wb') as f:
+                    np.save(f, featValue)
+                    np.save(f, featVec)
+
             index = np.argsort(-featValue)
             eigenvalue_num = math.trunc(len(self.feature_df.values[0]) * eigenvalue_percent)
             selected_values = featValue[index[:eigenvalue_num]]

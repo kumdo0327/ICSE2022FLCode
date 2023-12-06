@@ -67,7 +67,7 @@ class Pipeline:
         elif self.experiment == "fs_cvae":
             cp = float(self.configs["-cp"])
             ep = float(self.configs["-ep"])
-            self.data_obj = PCAData(self.dataloader)
+            self.data_obj = PCAData(self.dataloader, os.path.join(self.project_dir, "cache"), self.program)
             self.data_obj.process(cp, ep)
             self.data_obj = CVAESynthesisData(self.data_obj, self.save_tc_path)
             self.data_obj.process()
