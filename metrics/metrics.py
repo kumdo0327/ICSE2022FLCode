@@ -33,7 +33,7 @@ def get_N_para(feature, label):
 # Dstar，star is assigned to 2
 def dstar(feature, label):
     Ncf, Nuf, Ncs, Nus = get_N_para(feature, label)
-    return Ncf ** 2 / (Ncs + Nuf)
+    return Ncf ** 2 / (Ncs + Nuf) if Ncs + Nuf > 0 else float('inf')
 
 
 # Ochiai
