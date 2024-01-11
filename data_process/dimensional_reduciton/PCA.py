@@ -12,7 +12,7 @@ class PCAData(ProcessedData):
         super().__init__(raw_data)
         self.rest_columns = None
 
-        self.feature_path = os.path.join(cache_path, program) + "-feature.npy"
+        self.feature_path = os.path.join(cache_path, self.program) + "-feature.npy"
         self.time_path = time_path
 
     def process(self, components_percent=0.7, eigenvalue_percent=0.7):
