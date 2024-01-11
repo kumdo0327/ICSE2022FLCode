@@ -27,7 +27,7 @@ class Pipeline:
     def run(self):
         self._run_task()
         time_log = int(time.time() - self.start) 
-        with open(os.path.join(self.project_dir, "/time/e2e") + f"/{self.program}-{self.bug_id}.txt", "w") as f:
+        with open(os.path.join(self.project_dir, "time/e2e") + f"/{self.program}-{self.bug_id}.txt", "w") as f:
             f.write(f"{time_log // 3600}:{(time_log % 3600) // 60}:{time_log % 60}")
 
     def _dynamic_choose(self, loader):
