@@ -1,5 +1,6 @@
 import math
 import os
+import time
 
 import numpy as np
 import pandas as pd
@@ -7,11 +8,12 @@ from data_process.ProcessedData import ProcessedData
 
 class PCAData(ProcessedData):
 
-    def __init__(self, raw_data, cache_path, program):
+    def __init__(self, raw_data, cache_path, time_path):
         super().__init__(raw_data)
         self.rest_columns = None
 
         self.feature_path = os.path.join(cache_path, program) + "-feature.npy"
+        self.time_path = time_path
 
     def process(self, components_percent=0.7, eigenvalue_percent=0.7):
         if len(self.label_df) > 1:
@@ -19,14 +21,28 @@ class PCAData(ProcessedData):
 
             featValue, featVec = None, None
             if os.path.exists(self.feature_path):
+                begin = time.time()
                 with open(self.feature_path, 'rb') as f:
                     featValue = np.load(f)
                     featVec = np.load(f)
+                end = int(time.time() - self.start)
+                with open(os.path.join(self.time_path,  f"/read-{self.program}-{self.bug_id}.txt"), "w") as f:
+                    f.write(f"{time_log // 3600}:{(time_log % 3600) // 60}:{time_log % 60}")
             else:
+                begin = time.time()
                 featValue, featVec = np.linalg.eig(covMatrix)
+                end = int(time.time() - self.start)
+                with open(os.path.join(self.time_path,  f"/eig-{self.program}.txt"), "w") as f:
+                    f.write(f"{time_log // 3600}:{(time_log % 3600) // 60}:{time_log % 60}")
+
+                begin = time.time()
                 with open(self.feature_path, 'wb') as f:
                     np.save(f, featValue)
                     np.save(f, featVec)
+                end = int(time.time() - self.start)
+                with open(os.path.join(self.time_path,  f"/write-{self.program}.txt"), "w") as f:
+                    f.write(f"{time_log // 3600}:{(time_log % 3600) // 60}:{time_log % 60}")
+
 
             index = np.argsort(-featValue)
             eigenvalue_num = math.trunc(len(self.feature_df.values[0]) * eigenvalue_percent)

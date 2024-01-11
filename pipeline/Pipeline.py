@@ -27,8 +27,8 @@ class Pipeline:
     def run(self):
         self._run_task()
         time_log = int(time.time() - self.start) 
-        with open(self.project_dir + "/time/" + self.program + "-" + self.bug_id + ".txt", "w") as f:
-            f.write(str(time_log // 3600) + ':' + str((time_log % 3600) // 60) + ':' + str(time_log % 60))
+        with open(os.path.join(self.project_dir, "/time/e2e") + f"/{self.program}-{self.bug_id}.txt", "w") as f:
+            f.write(f"{time_log // 3600}:{(time_log % 3600) // 60}:{time_log % 60}")
 
     def _dynamic_choose(self, loader):
         self.dataset_dir = os.path.join(self.project_dir, "data")
@@ -67,7 +67,7 @@ class Pipeline:
         elif self.experiment == "fs_cvae":
             cp = float(self.configs["-cp"])
             ep = float(self.configs["-ep"])
-            self.data_obj = PCAData(self.dataloader, os.path.join("/volume"), self.program)
+            self.data_obj = PCAData(self.dataloader, "/volume/aeneas/cache", os.path.join(self.project_dir, "time/io"))
             self.data_obj.process(cp, ep)
             self.data_obj = CVAESynthesisData(self.data_obj, self.save_tc_path)
             self.data_obj.process()

@@ -95,4 +95,4 @@ class CVAESynthesisData(ProcessedData):
         self.data_df = pd.concat([self.feature_df, self.label_df], axis=1)
 
         print('DataFrame saving ...')
-        self.data_df.to_pickle(self.save_tc_path + self.program + "-" + self.bug_id)
+        self.data_df.to_pickle(os.path.join(self.save_tc_path, f"{self.program}-{self.bug_id}.pkl"))
