@@ -26,13 +26,13 @@ class PCAData(ProcessedData):
                     featValue = np.load(f)
                     featVec = np.load(f)
                 end = int(time.time() - begin)
-                with open(os.path.join(self.time_path,  f"read-{self.program}-{self.bug_id}.txt"), "w") as f:
+                with open(os.path.join(self.time_path,  f"read/{self.program}-{self.bug_id}.txt"), "w") as f:
                     f.write(f"{end // 3600}:{(end % 3600) // 60}:{end % 60}")
             else:
                 begin = time.time()
                 featValue, featVec = np.linalg.eig(covMatrix)
                 end = int(time.time() - begin)
-                with open(os.path.join(self.time_path,  f"eig-{self.program}.txt"), "w") as f:
+                with open(os.path.join(self.time_path,  f"eig/{self.program}.txt"), "w") as f:
                     f.write(f"{end // 3600}:{(end % 3600) // 60}:{end % 60}")
 
                 begin = time.time()
@@ -40,7 +40,7 @@ class PCAData(ProcessedData):
                     np.save(f, featValue)
                     np.save(f, featVec)
                 end = int(time.time() - begin)
-                with open(os.path.join(self.time_path,  f"write-{self.program}.txt"), "w") as f:
+                with open(os.path.join(self.time_path,  f"write/{self.program}-{self.bug_id}.txt"), "w") as f:
                     f.write(f"{end // 3600}:{(end % 3600) // 60}:{end % 60}")
 
 
