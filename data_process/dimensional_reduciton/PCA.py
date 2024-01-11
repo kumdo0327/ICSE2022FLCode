@@ -32,7 +32,7 @@ class PCAData(ProcessedData):
                 begin = time.time()
                 featValue, featVec = np.linalg.eig(covMatrix)
                 end = int(time.time() - begin)
-                with open(os.path.join(self.time_path,  f"/eig-{self.program}.txt"), "w") as f:
+                with open(os.path.join(self.time_path,  f"eig-{self.program}.txt"), "w") as f:
                     f.write(f"{time_log // 3600}:{(time_log % 3600) // 60}:{time_log % 60}")
 
                 begin = time.time()
