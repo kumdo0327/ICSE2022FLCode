@@ -59,6 +59,36 @@ class CalculateSuspiciousness():
             result_dict[method] = float('-inf')
         for method in method_list:
             concrete_df = all_df_dict[method]
+            print(type(concrete_df))
+            
+
+            """
+// Sort
+_ranking.sort([](const ranking_info& lhs, const ranking_info& rhs){ return lhs.sus > rhs.sus; });
+
+// Rank
+line_t virtual_ranking = 1;
+float sus = _ranking.begin()->sus;
+
+std::list<ranking_info*> tie;
+for (auto& iter : _ranking) {
+
+    if (sus > iter.sus) {
+
+        sus = iter.sus;
+        for (auto ptr_info : tie)
+            ptr_info->ranking = virtual_ranking;
+        tie.clear();
+    }
+    tie.push_back(&iter);
+    virtual_ranking++;
+}
+for (auto ptr_info : tie)
+    ptr_info->ranking = _ranking.size();
+
+return _ranking;
+            """
+
             print(concrete_df)
             temp_df = concrete_df[concrete_df["line_num"].isin(real_fault_line_data)]
             rank = temp_df.index.values[0]
