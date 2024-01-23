@@ -58,8 +58,9 @@ class CalculateSuspiciousness():
         for method in method_list:
             result_dict[method] = float('-inf')
         for method in method_list:
-            ranking = self.rank(method, all_df_dict[method])
+            ranking = self.rank(method, all_df_dict[method], real_fault_line_data)
             result_dict[method] = min(ranking)
+            print(result_dict[method])
         return result_dict
 
     def __calc_MAR_rank(self, all_df_dict, fault_line_data, method_list):
@@ -74,7 +75,7 @@ class CalculateSuspiciousness():
         for method in method_list:
             result_dict[method] = float('-inf')
         for method in method_list:
-            ranking = self.rank(method, all_df_dict[method])
+            ranking = self.rank(method, all_df_dict[method], real_fault_line_data)
             result_dict[method] = np.mean(ranking)
         return result_dict
     
