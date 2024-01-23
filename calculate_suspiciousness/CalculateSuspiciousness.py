@@ -62,8 +62,7 @@ class CalculateSuspiciousness():
             temp_df = concrete_df[concrete_df["line_num"].isin(real_fault_line_data)]
             rank = temp_df.index.values[0]
             val = temp_df[method].values[0]
-            print(temp_df[method].values)
-            print(concrete_df["line_num"].isin(real_fault_line_data))
+            print(temp_df[method])
             result_dict[method] = rank + 1
         return result_dict
 
