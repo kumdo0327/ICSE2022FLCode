@@ -58,42 +58,8 @@ class CalculateSuspiciousness():
         for method in method_list:
             result_dict[method] = float('-inf')
         for method in method_list:
-            concrete_df = all_df_dict[method]
-            print(type(concrete_df))
-            
-
-            """
-// Sort
-_ranking.sort([](const ranking_info& lhs, const ranking_info& rhs){ return lhs.sus > rhs.sus; });
-
-// Rank
-line_t virtual_ranking = 1;
-float sus = _ranking.begin()->sus;
-
-std::list<ranking_info*> tie;
-for (auto& iter : _ranking) {
-
-    if (sus > iter.sus) {
-
-        sus = iter.sus;
-        for (auto ptr_info : tie)
-            ptr_info->ranking = virtual_ranking;
-        tie.clear();
-    }
-    tie.push_back(&iter);
-    virtual_ranking++;
-}
-for (auto ptr_info : tie)
-    ptr_info->ranking = _ranking.size();
-
-return _ranking;
-            """
-
-            print(concrete_df)
-            temp_df = concrete_df[concrete_df["line_num"].isin(real_fault_line_data)]
-            rank = temp_df.index.values[0]
-            val = temp_df[method].values[0]
-            result_dict[method] = rank + 1
+            ranking = self.rank(method, all_df_dict[method])
+            result_dict[method] = min(ranking)
         return result_dict
 
     def __calc_MAR_rank(self, all_df_dict, fault_line_data, method_list):
@@ -108,8 +74,29 @@ return _ranking;
         for method in method_list:
             result_dict[method] = float('-inf')
         for method in method_list:
-            concrete_df = all_df_dict[method]
-            temp_df = concrete_df[concrete_df["line_num"].isin(real_fault_line_data)]
-
-            result_dict[method] = np.mean(temp_df.index.values + 1)
+            ranking = self.rank(method, all_df_dict[method])
+            result_dict[method] = np.mean(ranking)
         return result_dict
+    
+
+
+    def rank(self, method, df, fault_line_data) -> list:
+        ranking = [0 for _ in range(len(df.index) + 1)]
+        virtual_ranking = 0
+        lowest = df[method][0]
+        cand = list()
+
+        for i in df.index:
+            if lowest > df[method][i]:
+                lowest = df[method][i]
+                for line in cand:
+                    ranking[line] = virtual_ranking
+                cand.clear()
+            cand.append(df["line_num"][i])
+            virtual_ranking += 1
+
+        for line in cand:
+            ranking[line] = len(df.index)
+            
+        faults_ranking = [ranking[line] for line in fault_line_data]
+        return faults_ranking
