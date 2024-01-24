@@ -73,7 +73,7 @@ class CalculateSuspiciousness():
         for method in method_list:
             result_dict[method] = float('-inf')
         for method in method_list:
-            result_dict[method] = np.mean(ranking = self.rank(method, all_df_dict[method], real_fault_line_data))
+            result_dict[method] = np.mean(self.rank(method, all_df_dict[method], real_fault_line_data))
         return result_dict
     
 
