@@ -62,8 +62,8 @@ class Pipeline:
             cp = float(self.configs["-cp"])
             ep = float(self.configs["-ep"])
             self.data_obj = PCAData(self.dataloader, "/volume/aeneas/cache", os.path.join(self.project_dir, "time/io"))
-            self.data_obj.process(cp, ep)
             return
+            #self.data_obj.process(cp, ep)
         elif self.experiment == "fs_cvae":
             cp = float(self.configs["-cp"])
             ep = float(self.configs["-ep"])

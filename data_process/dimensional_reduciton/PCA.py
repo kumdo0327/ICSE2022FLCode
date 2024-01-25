@@ -21,21 +21,21 @@ class PCAData(ProcessedData):
 
             featValue, featVec = None, None
             if os.path.exists(self.feature_path):
-                begin = time.time()
                 print('PCA.py : load cache')
+                begin = time.time()
                 with open(self.feature_path, 'rb') as f:
                     featValue = np.load(f)
                     featVec = np.load(f)
-                print('\tdone')
                 end = int(time.time() - begin)
+                print('\tdone')
                 with open(os.path.join(self.time_path,  f"read/{self.program}-{self.bug_id}.txt"), "w") as f:
                     f.write(f"{end // 3600}:{(end % 3600) // 60}:{end % 60}")
             else:
-                begin = time.time()
                 print('PCA.py : featValue, featVec = np.linalg.eig(covMatrix)')
+                begin = time.time()
                 featValue, featVec = np.linalg.eig(covMatrix)
-                print('\tdone')
                 end = int(time.time() - begin)
+                print('\tdone')
                 with open(os.path.join(self.time_path,  f"eig/{self.program}.txt"), "w") as f:
                     f.write(f"{end // 3600}:{(end % 3600) // 60}:{end % 60}")
 
@@ -44,6 +44,7 @@ class PCAData(ProcessedData):
                     np.save(f, featValue)
                     np.save(f, featVec)
                 print('\tdone')
+                return
 
 
             print('PCA.py : trunc by ep')
