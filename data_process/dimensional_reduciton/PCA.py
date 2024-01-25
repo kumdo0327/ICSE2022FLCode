@@ -16,7 +16,7 @@ class PCAData(ProcessedData):
         self.time_path = time_path
 
     def process(self, components_percent=0.7, eigenvalue_percent=0.7):
-        if len(self.label_df) > 1 or True: ## 111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+        if len(self.label_df) > 1:
             covMatrix = self.feature_df.cov()
 
             featValue, featVec = None, None
@@ -44,7 +44,8 @@ class PCAData(ProcessedData):
                     np.save(f, featValue)
                     np.save(f, featVec)
                 print('\tdone')
-                return
+                if (self.bug_id == 'cache'):
+                    return
 
 
             print('PCA.py : trunc by ep')
