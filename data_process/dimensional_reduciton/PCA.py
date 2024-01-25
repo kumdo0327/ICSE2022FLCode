@@ -22,9 +22,11 @@ class PCAData(ProcessedData):
             featValue, featVec = None, None
             if os.path.exists(self.feature_path):
                 begin = time.time()
+                print('PCA.py : load cache')
                 with open(self.feature_path, 'rb') as f:
                     featValue = np.load(f)
                     featVec = np.load(f)
+                print('\tdone')
                 end = int(time.time() - begin)
                 with open(os.path.join(self.time_path,  f"read/{self.program}-{self.bug_id}.txt"), "w") as f:
                     f.write(f"{end // 3600}:{(end % 3600) // 60}:{end % 60}")
