@@ -67,13 +67,13 @@ class Pipeline:
         elif self.experiment == "fs_cvae":
             cp = float(self.configs["-cp"])
             ep = float(self.configs["-ep"])
-            print('self.data_obj = PCAData(self.dataloader, "/volume/aeneas/cache", os.path.join(self.project_dir, "time/io"))')
+            print('Pipeline.py : self.data_obj = PCAData(self.dataloader, "/volume/aeneas/cache", os.path.join(self.project_dir, "time/io"))')
             self.data_obj = PCAData(self.dataloader, "/volume/aeneas/cache", os.path.join(self.project_dir, "time/io"))
-            print('self.data_obj.process(cp, ep)')
+            print('Pipeline.py : self.data_obj.process(cp, ep)')
             self.data_obj.process(cp, ep)
-            print('self.data_obj = CVAESynthesisData(self.data_obj, self.save_tc_path)')
+            print('Pipeline.py : self.data_obj = CVAESynthesisData(self.data_obj, self.save_tc_path)')
             self.data_obj = CVAESynthesisData(self.data_obj, self.save_tc_path)
-            print('self.data_obj.process()')
+            print('Pipeline.py :  self.data_obj.process()')
             self.data_obj.process()
 
         print('CalculateSuspiciousness')
