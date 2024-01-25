@@ -50,11 +50,14 @@ class PCAData(ProcessedData):
                     f.write(f"{end // 3600}:{(end % 3600) // 60}:{end % 60}")
 
 
+            print('PCA.py : trunc by ep')
             index = np.argsort(-featValue)
             eigenvalue_num = math.trunc(len(self.feature_df.values[0]) * eigenvalue_percent)
             selected_values = featValue[index[:eigenvalue_num]]
             selected_vectors = featVec.T[index[:eigenvalue_num]].T
+            print('\tdone')
 
+            print('')
             contri = np.array([sum(v) for v in np.abs(selected_vectors)])
             contri_index = np.argsort(-contri)
 

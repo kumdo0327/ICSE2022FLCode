@@ -94,6 +94,3 @@ class CVAESynthesisData(ProcessedData):
         self.feature_df = pd.DataFrame(compose_feature, columns=self.feature_df.columns, dtype=float)
 
         self.data_df = pd.concat([self.feature_df, self.label_df], axis=1)
-
-        print('DataFrame saving ...')
-        self.data_df.to_pickle(os.path.join(self.save_tc_path, f"{self.program}-{self.bug_id}.pkl"))

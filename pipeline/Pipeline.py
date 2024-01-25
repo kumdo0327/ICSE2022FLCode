@@ -21,7 +21,6 @@ class Pipeline:
         self.method = configs["-m"].split(",")
         self.dataloader = self._choose_dataloader_obj()
         
-        self.save_tc_path = project_dir + "/generated_tc/"
         self.start = time.time()
 
     def run(self):
@@ -57,7 +56,7 @@ class Pipeline:
             self.data_obj = SMOTEData(self.dataloader)
             self.data_obj.process()
         elif self.experiment == "cvae":
-            self.data_obj = CVAESynthesisData(self.dataloader, self.save_tc_path)
+            self.data_obj = CVAESynthesisData(self.dataloader)
             self.data_obj.process()
         elif self.experiment == "fs":
             cp = float(self.configs["-cp"])
@@ -73,7 +72,7 @@ class Pipeline:
             self.data_obj.process(cp, ep)
             print('Pipeline.py : self.data_obj = CVAESynthesisData(self.data_obj, self.save_tc_path)')
             self.data_obj = CVAESynthesisData(self.data_obj, self.save_tc_path)
-            print('Pipeline.py :  self.data_obj.process()')
+            print('Pipeline.py : self.data_obj.process()')
             self.data_obj.process()
 
         print('CalculateSuspiciousness')
