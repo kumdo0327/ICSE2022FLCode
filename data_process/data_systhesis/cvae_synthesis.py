@@ -12,8 +12,8 @@ from data_process.data_systhesis.CVAE_model import *
 
 class CVAESynthesisData(ProcessedData):
 
-    def __init__(self, raw_data, save_tc_path):
-        super().__init__(raw_data, save_tc_path)
+    def __init__(self, raw_data):
+        super().__init__(raw_data)
         self.rest_columns = raw_data.rest_columns
 
     def process(self):
