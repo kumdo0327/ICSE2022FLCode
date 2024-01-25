@@ -16,7 +16,7 @@ class PCAData(ProcessedData):
         self.time_path = time_path
 
     def process(self, components_percent=0.7, eigenvalue_percent=0.7):
-        if len(self.label_df) > 1:
+        if len(self.label_df) > 1 or True:
             covMatrix = self.feature_df.cov()
 
             featValue, featVec = None, None
