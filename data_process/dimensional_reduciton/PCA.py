@@ -39,15 +39,11 @@ class PCAData(ProcessedData):
                 with open(os.path.join(self.time_path,  f"eig/{self.program}.txt"), "w") as f:
                     f.write(f"{end // 3600}:{(end % 3600) // 60}:{end % 60}")
 
-                begin = time.time()
                 print('PCA.py : caching')
                 with open(self.feature_path, 'wb') as f:
                     np.save(f, featValue)
                     np.save(f, featVec)
                 print('\tdone')
-                end = int(time.time() - begin)
-                with open(os.path.join(self.time_path,  f"write/{self.program}-{self.bug_id}.txt"), "w") as f:
-                    f.write(f"{end // 3600}:{(end % 3600) // 60}:{end % 60}")
 
 
             print('PCA.py : trunc by ep')

@@ -41,13 +41,13 @@ def ochiai(feature, label):
     Ncf, Nuf, Ncs, Nus = get_N_para(feature, label)
     div = (Ncf + Nuf) * (Ncf + Ncs)
     div = 0 if div < 0 else div
-    return Ncf / np.sqrt(div)
+    return Ncf / np.sqrt(div) if div > 0 else 0.0
 
 
 # Barinel
 def barinel(feature, label):
     Ncf, Nuf, Ncs, Nus = get_N_para(feature, label)
-    return 1 - Ncs / (Ncs + Ncf)
+    return 1 - Ncs / (Ncs + Ncf) if Ncs + Ncf > 0 else 0.0
 
 
 # ER1
