@@ -16,10 +16,11 @@ def process_corr_data(corr_data):
 def get_corr(path, method, state, bug_id):
     all_df_dict = dict()
 
-    file_name = method + '-' + bug_id + ".txt"
-    corr = process_coding(os.path.join(path, state, file_name))
-    corr = process_corr_data(corr)
-    all_df_dict[method] = pd.DataFrame(corr, columns=["line_num", method])
+    for method in method:
+        file_name = method + '-' + bug_id + ".txt"
+        corr = process_coding(os.path.join(path, state, file_name))
+        corr = process_corr_data(corr)
+        all_df_dict[method] = pd.DataFrame(corr, columns=["line_num", method])
 
     return all_df_dict
 
