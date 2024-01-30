@@ -3,16 +3,17 @@ import numpy as np
 from metrics.calc_corr import calc_corr
 from utils.write_util import write_corr_to_txt, write_rank_to_txt
 from utils.read_util import get_corr
+import time
 
 
 class CalculateSuspiciousness():
-    def __init__(self, data_obj, method, save_rank_path, experiment, time):
+    def __init__(self, data_obj, method, save_rank_path, experiment, pre_time):
         self.data_obj = data_obj
         self.method = method
         self.sava_rank_path = save_rank_path
         self.suspicious_list = None
         self.state = experiment
-        self.time = time
+        self.time = pre_time
         self.start = time.time()
 
     def run(self):
