@@ -81,7 +81,7 @@ class Pipeline:
             save_rank_path = os.path.join(self.project_dir, f"results/{self.experiment}/{m}/{self.program}")
             if not os.path.exists(save_rank_path):
                 os.makedirs(save_rank_path)
-            cc = CalculateSuspiciousness(self.data_obj, self.method, save_rank_path, self.experiment, int(time.time() - self.start))
+            cc = CalculateSuspiciousness(self.data_obj, m, save_rank_path, self.experiment, int(time.time() - self.start))
             time_log = cc.run()
 
             dir = os.path.join(self.project_dir, f"time/e2e/{m}/{self.program}")
