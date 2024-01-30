@@ -87,5 +87,5 @@ class Pipeline:
             dir = os.path.join(self.project_dir, f"time/e2e/{m}/{self.program}")
             if not os.path.exists(dir):
                 os.makedirs(dir)
-            with open(os.path.join(dir, f"{self.bug_id}.txt", "w")) as f:
+            with open(os.path.join(dir, f"{self.bug_id}.txt"), "w") as f:
                 f.write(f"{time_log // 3600}:{(time_log % 3600) // 60}:{time_log % 60}")
