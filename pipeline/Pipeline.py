@@ -76,8 +76,8 @@ class Pipeline:
             print('Pipeline.py : self.data_obj.process()')
             self.data_obj.process()
 
-        print('CalculateSuspiciousness')
         for m in self.method:
+            print('CalculateSuspiciousness', m)
             save_rank_path = os.path.join(self.project_dir, f"results/{m}/{self.program}")
             if not os.path.exists(save_rank_path):
                 os.makedirs(save_rank_path)
