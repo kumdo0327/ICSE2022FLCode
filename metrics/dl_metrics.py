@@ -150,6 +150,7 @@ def CNN(features, label):
         print('virtual_test = torch.eye(input_dimension).unsqueeze(0).unsqueeze(0).to(device)')
         virtual_test = torch.eye(input_dimension).unsqueeze(0).unsqueeze(0).to(device)
         print('suspicious = ecnn(virtual_test)')
+        eccn.to(torch.device('cpu'))
         suspicious = ecnn(virtual_test)
         print('for line, s in zip(features.columns, suspicious):')
         for line, s in zip(features.columns, suspicious):
