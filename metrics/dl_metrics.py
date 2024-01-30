@@ -36,7 +36,8 @@ class EMLP(nn.Module):
 
 def MLP(features, label):
     input_dimension = len(features.columns)
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    #device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    device = torch.device('cpu')
     emlp = EMLP(input_dimension).to(device)
     loss_fn = nn.MSELoss()
     lr = 1e-2
@@ -70,8 +71,7 @@ def MLP(features, label):
     emlp.eval()
     ret_dict = {}
     with torch.no_grad():
-        #virtual_test = torch.eye(input_dimension).to(device)
-        virtual_test = torch.eye(input_dimension)
+        virtual_test = torch.eye(input_dimension).to(device)
         suspicious = emlp(virtual_test)
         for line, s in zip(features.columns, suspicious):
             ret_dict[line] = s.item()
@@ -114,7 +114,8 @@ class ECNN(nn.Module):
 def CNN(features, label):
     input_dimension = len(features.columns)
 
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    #device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    device = torch.device('cpu')
     ecnn = ECNN(input_dimension).to(device)
     lr = 0.01
     optim = torch.optim.SGD(ecnn.parameters(), lr=lr, momentum=0.9)
@@ -148,8 +149,7 @@ def CNN(features, label):
     ecnn.eval()
     ret_dict = {}
     with torch.no_grad():
-        #virtual_test = torch.eye(input_dimension).unsqueeze(0).unsqueeze(0).to(device)
-        virtual_test = torch.eye(input_dimension).unsqueeze(0).unsqueeze(0)
+        virtual_test = torch.eye(input_dimension).unsqueeze(0).unsqueeze(0).to(device)
         suspicious = ecnn(virtual_test)
         for line, s in zip(features.columns, suspicious):
             ret_dict[line] = s.item()
@@ -183,7 +183,8 @@ class ERNN(nn.Module):
 
 def RNN(features, label):
     input_dimension = len(features.columns)
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    #device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    device = torch.device('cpu')
     ernn = ERNN(input_dimension).to(device)
     loss_fn = nn.MSELoss()
     lr = 1e-2
@@ -217,8 +218,7 @@ def RNN(features, label):
     ernn.eval()
     ret_dict = {}
     with torch.no_grad():
-        #virtual_test = torch.eye(input_dimension).unsqueeze(0).to(device)
-        virtual_test = torch.eye(input_dimension).unsqueeze(0)
+        virtual_test = torch.eye(input_dimension).unsqueeze(0).to(device)
         suspicious = ernn(virtual_test).squeeze(0)
         for line, s in zip(features.columns, suspicious):
             ret_dict[line] = s.item()
