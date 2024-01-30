@@ -78,7 +78,7 @@ class Pipeline:
 
         for m in self.method:
             print('CalculateSuspiciousness', m)
-            save_rank_path = os.path.join(self.project_dir, f"results/e2e/{self.experiment}/{m}/{self.program}")
+            save_rank_path = os.path.join(self.project_dir, f"results/{self.experiment}/{m}/{self.program}")
             if not os.path.exists(save_rank_path):
                 os.makedirs(save_rank_path)
             cc = CalculateSuspiciousness(self.data_obj, [m], save_rank_path, self.experiment, int(time.time() - self.start))
