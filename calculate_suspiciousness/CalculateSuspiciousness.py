@@ -2,16 +2,18 @@ import os
 import numpy as np
 from metrics.calc_corr import calc_corr
 from utils.write_util import write_corr_to_txt, write_rank_to_txt
-from utils.read_util import get_corr, find_closest_num
+from utils.read_util import get_corr
 
 
 class CalculateSuspiciousness():
-    def __init__(self, data_obj, method, save_rank_path, experiment):
+    def __init__(self, data_obj, method, save_rank_path, experiment, time):
         self.data_obj = data_obj
         self.method = method
         self.sava_rank_path = save_rank_path
         self.suspicious_list = None
         self.state = experiment
+        self.time = time
+        self.start = time.time()
 
     def run(self):
         self._calculate_susp_for_method_list()
@@ -19,6 +21,7 @@ class CalculateSuspiciousness():
         self._save_rank()
         self._calculate_AR_rank()
         self._save_AR_rank()
+        return self.time + int(time.time() - self.start)
 
     def _calculate_susp_for_method_list(self):
         for method in self.method:
@@ -39,7 +42,7 @@ class CalculateSuspiciousness():
         self.rank_MAR_dict = self.__calc_MAR_rank(all_df_dict, self.data_obj.fault_line, self.method)
 
     def _save_rank(self):
-        save_rank_filename = os.path.join(self.sava_rank_path, f"{self.state}/{self.data_obj.program}-{self.data_obj.bug_id}-FR.txt")
+        save_rank_filename = os.path.join(self.sava_rank_path, f"{self.state}/{self.data_obj.program}/{self.data_obj.bug_id}-FR.txt")
         write_rank_to_txt(self.rank_MFR_dict, save_rank_filename)
 
     def _save_AR_rank(self):
@@ -75,8 +78,6 @@ class CalculateSuspiciousness():
         for method in method_list:
             result_dict[method] = np.mean(self.rank(method, all_df_dict[method], real_fault_line_data))
         return result_dict
-    
-
 
     def rank(self, method, df, fault_line_data) -> list:
         ranking = [0 for _ in range(len(df.index) + 1)]
