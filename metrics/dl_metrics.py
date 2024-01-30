@@ -70,7 +70,8 @@ def MLP(features, label):
     emlp.eval()
     ret_dict = {}
     with torch.no_grad():
-        virtual_test = torch.eye(input_dimension).to(device)
+        #virtual_test = torch.eye(input_dimension).to(device)
+        virtual_test = torch.eye(input_dimension)
         suspicious = emlp(virtual_test)
         for line, s in zip(features.columns, suspicious):
             ret_dict[line] = s.item()
@@ -147,7 +148,8 @@ def CNN(features, label):
     ecnn.eval()
     ret_dict = {}
     with torch.no_grad():
-        virtual_test = torch.eye(input_dimension).unsqueeze(0).unsqueeze(0).to(device)
+        #virtual_test = torch.eye(input_dimension).unsqueeze(0).unsqueeze(0).to(device)
+        virtual_test = torch.eye(input_dimension).unsqueeze(0).unsqueeze(0)
         suspicious = ecnn(virtual_test)
         for line, s in zip(features.columns, suspicious):
             ret_dict[line] = s.item()
@@ -215,7 +217,8 @@ def RNN(features, label):
     ernn.eval()
     ret_dict = {}
     with torch.no_grad():
-        virtual_test = torch.eye(input_dimension).unsqueeze(0).to(device)
+        #virtual_test = torch.eye(input_dimension).unsqueeze(0).to(device)
+        virtual_test = torch.eye(input_dimension).unsqueeze(0)
         suspicious = ernn(virtual_test).squeeze(0)
         for line, s in zip(features.columns, suspicious):
             ret_dict[line] = s.item()
