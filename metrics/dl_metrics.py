@@ -36,8 +36,7 @@ class EMLP(nn.Module):
 
 def MLP(features, label):
     input_dimension = len(features.columns)
-    #device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    device = torch.device('cpu')
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     emlp = EMLP(input_dimension).to(device)
     loss_fn = nn.MSELoss()
     lr = 1e-2
@@ -114,8 +113,7 @@ class ECNN(nn.Module):
 def CNN(features, label):
     input_dimension = len(features.columns)
 
-    #device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    device = torch.device('cpu')
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     ecnn = ECNN(input_dimension).to(device)
     lr = 0.01
     optim = torch.optim.SGD(ecnn.parameters(), lr=lr, momentum=0.9)
@@ -145,11 +143,13 @@ def CNN(features, label):
             optim.step()
         if epoch % 20 == 0:
             print('====>CNN training... Epoch: {}  total loss: {:.4f}'.format(epoch, train_loss))
-
+    print('ecnn.eval()')
     ecnn.eval()
     ret_dict = {}
     with torch.no_grad():
+        print('virtual_test = torch.eye(input_dimension).unsqueeze(0).unsqueeze(0).to(device)')
         virtual_test = torch.eye(input_dimension).unsqueeze(0).unsqueeze(0).to(device)
+        print('suspicious = ecnn(virtual_test)')
         suspicious = ecnn(virtual_test)
         for line, s in zip(features.columns, suspicious):
             ret_dict[line] = s.item()
@@ -183,8 +183,7 @@ class ERNN(nn.Module):
 
 def RNN(features, label):
     input_dimension = len(features.columns)
-    #device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    device = torch.device('cpu')
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     ernn = ERNN(input_dimension).to(device)
     loss_fn = nn.MSELoss()
     lr = 1e-2
