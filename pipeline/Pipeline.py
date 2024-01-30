@@ -84,7 +84,7 @@ class Pipeline:
             cc = CalculateSuspiciousness(self.data_obj, [m], save_rank_path, self.experiment, int(time.time() - self.start))
             time_log = cc.run()
 
-            dir = os.path.join(self.project_dir, f"time/{self.experiment}/e2e/{m}/{self.program}")
+            dir = os.path.join(self.project_dir, f"time/e2e/{self.experiment}/{m}/{self.program}")
             if not os.path.exists(dir):
                 os.makedirs(dir)
             with open(os.path.join(dir, f"{self.bug_id}.txt"), "w") as f:
