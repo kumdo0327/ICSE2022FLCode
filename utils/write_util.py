@@ -11,7 +11,7 @@ def write_corr_to_txt(method, corr_dict, path, state, bug_id):
     save_path = os.path.join(path, state)
     if not os.path.exists(save_path):
         os.mkdir(save_path)
-    res_file_name = state + '-' + bug_id + ".txt"
+    res_file_name = method + '-' + bug_id + ".txt"
     concrete_path = os.path.join(save_path, res_file_name)
 
     with open(concrete_path, 'w') as f:
