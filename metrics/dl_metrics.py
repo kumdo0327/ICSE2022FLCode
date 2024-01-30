@@ -151,6 +151,7 @@ def CNN(features, label):
         virtual_test = torch.eye(input_dimension).unsqueeze(0).unsqueeze(0).to(device)
         print('suspicious = ecnn(virtual_test)')
         suspicious = ecnn(virtual_test)
+        print('for line, s in zip(features.columns, suspicious):')
         for line, s in zip(features.columns, suspicious):
             ret_dict[line] = s.item()
     return ret_dict
