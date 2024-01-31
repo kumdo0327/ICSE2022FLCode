@@ -47,7 +47,7 @@ class CalculateSuspiciousness():
         write_rank_to_txt(self.rank_MFR_dict, save_rank_filename)
 
     def _save_AR_rank(self):
-        save_rank_filename = os.path.join(self.sava_rank_path, f"{self.data_obj.bug_id}-FR.txt")
+        save_rank_filename = os.path.join(self.sava_rank_path, f"{self.data_obj.bug_id}-AR.txt")
         write_rank_to_txt(self.rank_MAR_dict, save_rank_filename)
 
     def __calculate_rank(self, all_df_dict, fault_line_data, method_list):
