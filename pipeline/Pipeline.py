@@ -26,8 +26,6 @@ class Pipeline:
     def run(self):
         self._run_task()
         time_log = int(time.time() - self.start) 
-        with open(os.path.join(self.project_dir, "time/e2e") + f"/{self.program}-{self.bug_id}.txt", "w") as f:
-            f.write(f"{time_log // 3600}:{(time_log % 3600) // 60}:{time_log % 60}")
 
     def _dynamic_choose(self, loader):
         self.dataset_dir = os.path.join(self.project_dir, "data")
@@ -78,7 +76,16 @@ class Pipeline:
             print('Pipeline.py : self.data_obj.process()')
             self.data_obj.process()
 
-        print('CalculateSuspiciousness')
-        save_rank_path = os.path.join(self.project_dir, "results")
-        cc = CalculateSuspiciousness(self.data_obj, self.method, save_rank_path, self.experiment)
-        cc.run()
+        for m in self.method:
+            print('CalculateSuspiciousness', m)
+            save_rank_path = os.path.join(self.project_dir, f"results/{self.experiment}/{m}/{self.program}")
+            if not os.path.exists(save_rank_path):
+                os.makedirs(save_rank_path)
+            cc = CalculateSuspiciousness(self.data_obj, [m], save_rank_path, self.experiment, int(time.time() - self.start))
+            time_log = cc.run()
+
+            dir = os.path.join(self.project_dir, f"time/e2e/{self.experiment}/{m}/{self.program}")
+            if not os.path.exists(dir):
+                os.makedirs(dir)
+            with open(os.path.join(dir, f"{self.bug_id}.txt"), "w") as f:
+                f.write(f"{time_log // 3600}:{(time_log % 3600) // 60}:{time_log % 60}")
