@@ -26,7 +26,6 @@ class Pipeline:
     def run(self):
         print(f"\n\n {self.program} : {self.bug_id} \n\n")
         self._run_task()
-        time_log = int(time.time() - self.start) 
 
     def _dynamic_choose(self, loader):
         self.dataset_dir = os.path.join(self.project_dir, "data")
@@ -68,21 +67,19 @@ class Pipeline:
         elif self.experiment == "fs_cvae":
             cp = float(self.configs["-cp"])
             ep = float(self.configs["-ep"])
-            print('Pipeline.py : self.data_obj = PCAData(self.dataloader, "/volume/aeneas/cache", os.path.join(self.project_dir, "time/io"))')
             self.data_obj = PCAData(self.dataloader, "/volume/aeneas/cache", os.path.join(self.project_dir, "time/io"))
-            print('Pipeline.py : self.data_obj.process(cp, ep)')
             self.data_obj.process(cp, ep)
-            print('Pipeline.py : self.data_obj = CVAESynthesisData(self.data_obj)')
             self.data_obj = CVAESynthesisData(self.data_obj)
-            print('Pipeline.py : self.data_obj.process()')
             self.data_obj.process()
 
+        processing_time = int(time.time() - self.start)
+        print(f"\tTime# data processing = {processing_time}s")
         for m in self.method:
             print('CalculateSuspiciousness', m)
             save_rank_path = os.path.join(self.project_dir, f"results/{self.experiment}/{m}/{self.program}")
             if not os.path.exists(save_rank_path):
                 os.makedirs(save_rank_path)
-            cc = CalculateSuspiciousness(self.data_obj, [m], save_rank_path, self.experiment, int(time.time() - self.start))
+            cc = CalculateSuspiciousness(self.data_obj, [m], save_rank_path, self.experiment, processing_time)
             time_log = cc.run()
 
             dir = os.path.join(self.project_dir, f"time/e2e/{self.experiment}/{m}/{self.program}")
@@ -90,3 +87,4 @@ class Pipeline:
                 os.makedirs(dir)
             with open(os.path.join(dir, f"{self.bug_id}.txt"), "w") as f:
                 f.write(f"{time_log // 3600}:{(time_log % 3600) // 60}:{time_log % 60}")
+                print(f"\tTime# end-to-end = {time_log}s")
