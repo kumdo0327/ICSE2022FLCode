@@ -24,7 +24,7 @@ class Pipeline:
         self.start = time.time()
 
     def run(self):
-        print(f"\n {self.program} : {self.bug_id} \n")
+        print(f"\n\n {self.program} : {self.bug_id} \n\n")
         self._run_task()
         time_log = int(time.time() - self.start) 
 
