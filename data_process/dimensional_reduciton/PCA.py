@@ -47,29 +47,21 @@ class PCAData(ProcessedData):
                 if (self.bug_id == 'cache'):
                     return
 
-
-            print('PCA.py : trunc by ep')
             index = np.argsort(-featValue)
             eigenvalue_num = math.trunc(len(self.feature_df.values[0]) * eigenvalue_percent)
             selected_values = featValue[index[:eigenvalue_num]]
             selected_vectors = featVec.T[index[:eigenvalue_num]].T
-            print('\tdone')
 
-            print('PCA.py : init contri')
             contri = np.array([sum(v) for v in np.abs(selected_vectors)])
             contri_index = np.argsort(-contri)
-            print('\tdone')
 
-            print('PCA.py : trunc by cp')
             num_components = math.trunc(len(self.feature_df.values[0]) * components_percent)
             selected_index = contri_index[:num_components]
             rest_index = contri_index[num_components:]
             rest_columns = self.feature_df.columns[rest_index]
             self.rest_columns = list(rest_columns)
             low_features = self.feature_df.values.T[selected_index].T
-            print('\tdone')
 
-            print('PCA.py : set self.feature_df, self.label_df, self.data_df')
             columns = self.feature_df.columns[selected_index]
             low_features = pd.DataFrame(low_features, columns=columns)
             low_data = pd.concat([low_features, self.label_df], axis=1)
@@ -77,4 +69,3 @@ class PCAData(ProcessedData):
             self.feature_df = low_features
             self.label_df = self.label_df
             self.data_df = low_data
-            print('\tdone')
