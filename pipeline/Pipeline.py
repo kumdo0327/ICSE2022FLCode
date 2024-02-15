@@ -11,7 +11,7 @@ from data_process.data_undersampling.undersampling import UndersamplingData
 from calculate_suspiciousness.CalculateSuspiciousness import CalculateSuspiciousness
 
 class Pipeline:
-    def __init__(self, project_dir, configs):
+    def __init__(self, project_dir, configs, start):
         self.configs = configs
         self.project_dir = project_dir
         self.dataset = configs["-d"]
@@ -21,7 +21,7 @@ class Pipeline:
         self.method = configs["-m"].split(",")
         self.dataloader = self._choose_dataloader_obj()
         
-        self.start = time.time()
+        self.start = start
 
     def run(self):
         print(f"\n\n {self.program} : {self.bug_id} \n\n")
@@ -74,12 +74,14 @@ class Pipeline:
 
         processing_time = int(time.time() - self.start)
         print(f"\tTime# data processing = {processing_time}s")
+
         for m in self.method:
             print('CalculateSuspiciousness', m)
             save_rank_path = os.path.join(self.project_dir, f"results/{self.experiment}/{m}/{self.program}")
             if not os.path.exists(save_rank_path):
                 os.makedirs(save_rank_path)
-            cc = CalculateSuspiciousness(self.data_obj, [m], save_rank_path, self.experiment, processing_time)
+
+            cc = CalculateSuspiciousness(self.data_obj, [m], save_rank_path, self.experiment, processing_time, time.time())
             time_log = cc.run()
 
             dir = os.path.join(self.project_dir, f"time/e2e/{self.experiment}/{m}/{self.program}")

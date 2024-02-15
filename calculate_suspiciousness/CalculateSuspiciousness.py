@@ -7,14 +7,15 @@ import time
 
 
 class CalculateSuspiciousness():
-    def __init__(self, data_obj, method, save_rank_path, experiment, pre_time):
+    def __init__(self, data_obj, method, save_rank_path, experiment, pre_time, start):
         self.data_obj = data_obj
         self.method = method
         self.sava_rank_path = save_rank_path
         self.suspicious_list = None
         self.state = experiment
+        
+        self.start = start
         self.time = pre_time
-        self.start = time.time()
 
     def run(self):
         self._calculate_susp_for_method_list()
