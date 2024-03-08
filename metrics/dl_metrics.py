@@ -36,7 +36,7 @@ class EMLP(nn.Module):
 
 def MLP(features, label):
     input_dimension = len(features.columns)
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda:1")
     emlp = EMLP(input_dimension).to(device)
     loss_fn = nn.MSELoss()
     lr = 1e-2
@@ -113,7 +113,7 @@ class ECNN(nn.Module):
 def CNN(features, label):
     input_dimension = len(features.columns)
 
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda:1")
     ecnn = ECNN(input_dimension).to(device)
     lr = 0.01
     optim = torch.optim.SGD(ecnn.parameters(), lr=lr, momentum=0.9)
@@ -181,7 +181,7 @@ class ERNN(nn.Module):
 
 def RNN(features, label):
     input_dimension = len(features.columns)
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda:1")
     ernn = ERNN(input_dimension).to(device)
     loss_fn = nn.MSELoss()
     lr = 1e-2
